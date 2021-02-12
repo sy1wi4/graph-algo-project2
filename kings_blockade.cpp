@@ -92,8 +92,6 @@ int* lexBFS(Graph* g){
 int max_clique(Graph* g){
     int* visit_order;
     visit_order = lexBFS(g);
-    vector<list<int>> RNs(g->size);
-
 
     int max_clique = 1;
     int current_clique;
@@ -106,7 +104,6 @@ int max_clique(Graph* g){
         for (auto & j : g->adj_list[v]) {
             int ngh = j->v;
             if (visit_order[ngh] < index){
-                RNs[v].push_back(ngh);
                 current_clique++;
             }
         }
@@ -137,7 +134,7 @@ int main() {
             add_edge(&g, u - 1, v - 1);
             add_edge(&g, v - 1, u - 1);
         }
-        cout << kings_blockade(&g);
+        cout << kings_blockade(&g) << endl;
     }
 }
 
