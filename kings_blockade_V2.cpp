@@ -37,6 +37,7 @@ public:
     void delete_node(Node*);
     int get_v_from_last_set();
     static list<int>::iterator remove_ith(Node*, int);
+    void delete_list();
 };
 
 
@@ -85,7 +86,7 @@ void DoublyLinkedlist::delete_node(Node* node) {
         node->prev->next = node->next;
         node->next->prev = node->prev;
     }
-    free(node);
+    delete node;
 }
 
 int DoublyLinkedlist::get_v_from_last_set() {
@@ -102,6 +103,15 @@ list<int>::iterator DoublyLinkedlist::remove_ith(Node* node, int idx) {
     auto it = node->vertices.begin();
     advance(it, idx);
     return node->vertices.erase(it);
+}
+
+void DoublyLinkedlist::delete_list() {
+    Node* current;
+    while (head != nullptr){
+        current = head;
+        head = head->next;
+        delete current;
+    }
 }
 
 
@@ -153,16 +163,16 @@ int* lexBFS(Graph* g){
     auto* dll = new DoublyLinkedlist();
     dll->insert_front(v_set);
 
-    list<int> last_set;
     int v;
     int order = 1;
-
     int visits = 0;
+
     for (int i = 0; i < g->size; i++) {
         v = dll->get_v_from_last_set();
         visit_order[v] = order;
         if (++visits == g->size) {
-            free(dll);
+            dll->delete_list();
+            delete dll;
             break;
         }
         order++;
@@ -205,7 +215,7 @@ int* lexBFS(Graph* g){
 }
 
 int max_clique(Graph* g){
-    int* visit_order = new int[g->size];
+    int* visit_order;
     visit_order = lexBFS(g);
 
 
