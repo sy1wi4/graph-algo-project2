@@ -57,16 +57,18 @@ int* lexBFS(Graph* g){
         // update v_sets
         list<list<int>> new_L;
         for (auto &it : L) {
-            list<int> connected;
             list<int> not_connected;
-            for (int &it2 : it) {
-                if (g->matrix[v][it2] == 1) connected.push_back(it2);
-                else not_connected.push_back(it2);
+            for (auto it2 = it.begin(); it2 != it.end(); it2++) {
+                if (g->matrix[v][*it2] == 0) {
+                    not_connected.push_back(*it2);
+                    it2 =  it.erase(it2);
+                    it2--;
+                }
             }
             if (not not_connected.empty())
                 new_L.push_back(not_connected);
-            if (not connected.empty())
-                new_L.push_back(connected);
+            if (not it.empty())
+                new_L.push_back(it);
         }
         L = new_L;
     }
